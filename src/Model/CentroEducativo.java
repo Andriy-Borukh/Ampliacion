@@ -58,7 +58,40 @@ public class CentroEducativo {
     }
 
     public String getTipoCentro() {
-        return tipoCentro;
+        String t = tipoCentro;
+
+        //elimina las utlimas comillas
+        if (t.endsWith("\"") && t.length() > 1) {
+            t = t.substring(0, t.length() - 1);
+        }
+
+        //extrae la ultima palabra que es la que contiene el tipo de centro
+        int ultimaPalabra = t.lastIndexOf("/");
+        t = t.substring(ultimaPalabra + 1);
+
+        return t;
+    }
+
+    public String getCategoriaCentro() {
+        if (tipoCentro == null) {
+            return "DESCONOCIDO";
+        }
+        String t = tipoCentro.toLowerCase();
+
+        if (t.contains("colegiospublicos")) {
+            return "PUBLICO";
+        }
+        if (t.contains("colegiosprivadosconcertados") || t.contains("colegiosprivados")) {
+            return "PRIVADO_CONCERTADO";
+        }
+        if (t.contains("centroseducacionadultos")) {
+            return "ADULTOS";
+        }
+        if (t.contains("escuelasinfantiles")) {
+            return "INFANTIL";
+        }
+
+        return "OTRO";
     }
 
     @Override

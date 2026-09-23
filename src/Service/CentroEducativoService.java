@@ -29,7 +29,7 @@ public class CentroEducativoService {
         //La primera línea del csv en el que se encuentran los campos que contienen los centros
         String cabecera = lineas.getFirst();
         //Separa el nombre de los campos en un array de Strings
-        String[] nombresCampo = cabecera.split(";", -1);
+        String[] nombresCampo = splitLinea(cabecera);
 
         //Construye un map en el que se guarda el nombre del campo con su posición
         Map<String, Integer> indicePorNombre = MapIndices(nombresCampo);
@@ -44,7 +44,7 @@ public class CentroEducativoService {
     //Convierte una línea del csv en un objeto CentroEducativo
     private CentroEducativo parse(String linea, Map<String, Integer> indicePorNombre) {
         //Separa los campos
-        String[] campos = linea.split(";", -1);
+        String[] campos = splitLinea(linea);
 
         //Guarda en variables el contenido del campo correspondiente
         String id = getCampos(campos, indicePorNombre, "PK");
@@ -76,7 +76,41 @@ public class CentroEducativoService {
         if (indice == null || indice < 0 || indice >= campos.length)
             return "";
 
-        return campos[indice];
+        return campos[indice].trim();
+    }
+
+    //Esta funcion sirve para separar bien las lineas ya que hay campos que tienen dobles comillas y el programa separa
+    // mal las cosas
+    private String[] splitLinea(String linea) {
+        //Lista de los campos completos
+        List<String> campos = new ArrayList<>();
+        //String que se acumula al leer la linea debido a que hay campos con ; y tengo que identificar
+        // que ; es un separador y cual no
+        StringBuilder actual = new StringBuilder();
+        //Para saber si esta dentro de comillas
+        boolean dentroComillas = false;
+
+        for (int i = 0; i < linea.length(); i++) {
+            char c = linea.charAt(i);
+
+            if (c == '"') {
+                //Si entramos dentro de comillas cambiamos el estado y empezamos a guardar caracter por caracter
+                // el contenido del campo
+                dentroComillas = !dentroComillas;
+                actual.append(c);
+            } else if (c == ';' && !dentroComillas) {
+                //Si no esta dentro de comillas y se encuentra un ; significa que es un separador
+                campos.add(actual.toString());
+                actual.setLength(0);
+            } else {
+                //En cambio si hay ; dentro de comillas significa que no es un separador
+                actual.append(c);
+            }
+        }
+        //Para añadir el úlitmo campo
+        campos.add(actual.toString());
+
+        return campos.toArray(new String[0]);
     }
 
 }
