@@ -14,3 +14,19 @@ La aplicación se encarga de:
 📊 Consultar la información según diferentes criterios.
 
 El objetivo principal es facilitar la consulta de un conjunto de datos sin necesidad de revisar manualmente todo el contenido del archivo.
+
+✨ Funcionalidades
+Lectura de archivos CSV.
+Procesamiento de los datos.
+Visualización de la información.
+Filtrado por diferentes campos.
+Consulta de los datos de forma sencilla.
+Gestión de la información mediante programación orientada a objetos.
+
+👨‍💻 Autor
+
+Andriy Borukh
+
+📜 Licencia
+
+Este proyecto ha sido desarrollado con fines educativos.
